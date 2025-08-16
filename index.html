@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LeafyGlow — Business Model Demo</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            /* White background */
+            --card: #f8f9fa;
+            /* light card */
+            --muted: #555;
+            /* muted gray */
+            --brand: #31c26a;
+            /* fresh leaf */
+            --brand-2: #1a8f4b;
+            /* deep leaf */
+            --text: #222;
+            /* dark text */
+            --accent: #1a8f4b;
+            /* highlight */
+            --warn: #ffd166;
+            /* warm */
+            --shadow: 0 4px 20px rgba(0, 0, 0, .08);
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .container {
+            width: min(1200px, 92vw);
+            margin-inline: auto
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .06)
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            gap: 10px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: .2px
+        }
+
+        .brand img {
+            height: 42px;
+            width: auto;
+            display: block
+        }
+
+        .brand span {
+            font-size: 1.25rem;
+            color: var(--brand-2)
+        }
+
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .navlinks a,
+        .btn {
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background: rgba(0, 0, 0, .02)
+        }
+
+        .navlinks a:hover,
+        .btn:hover {
+            background: rgba(0, 0, 0, .05)
+        }
+
+        .cart {
+            position: relative
+        }
+
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--warn);
+            color: #232;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            font-size: .72rem;
+            font-weight: 700
+        }
+
+        /* Hero */
+        .hero {
+            padding: 56px 0 22px
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 3.6vw, 3rem);
+            margin: 8px 0
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 900px
+        }
+
+        /* KPI cards */
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 16px
+        }
+
+        .kpis .card {
+            background: var(--card);
+            border: 1px solid rgba(0, 0, 0, .06);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow)
+        }
+
+        .kpis h3 {
+            margin: 0 0 6px;
+            font-size: 1.05rem;
+            color: var(--accent)
+        }
+
+        .kpis .big {
+            font-size: 1.25rem;
+            font-weight: 800
+        }
+
+        /* Sections */
+        section {
+            padding: 28px 0
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 1.35rem
+        }
+
+        .pill {
+            font-size: .78rem;
+            color: #193;
+            background: rgba(49, 194, 106, .15);
+            padding: 6px 10px;
+            border: 1px solid rgba(49, 194, 106, .35);
+            border-radius: 999px
+        }
+
+        /* Grids */
+        .grid {
+            display: grid;
+            gap: 12px
+        }
+
+        .grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(0, 0, 0, .06);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow)
+        }
+
+        .card h3 {
+            margin: 0 0 6px;
+            font-size: 1.05rem;
+            color: var(--accent)
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        ul {
+            margin: 8px 0 0 18px
+        }
+
+        /* Products */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 12px
+        }
+
+        @media(min-width:680px) {
+            .products {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        .product {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: var(--shadow)
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, .06)
+        }
+
+        .price {
+            font-weight: 800
+        }
+
+        /* BMC */
+        .bmc {
+            display: grid;
+            gap: 10px
+        }
+
+        @media(min-width:900px) {
+            .bmc {
+                grid-template-columns: 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr
+            }
+
+            .bmc .col-2 {
+                grid-column: span 2
+            }
+
+            .bmc .col-3 {
+                grid-column: span 3
+            }
+        }
+
+        .bmc .box {
+            background: var(--card);
+            border: 1px dashed rgba(0, 0, 0, .15);
+            border-radius: 14px;
+            padding: 14px
+        }
+
+        .box h4 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+            color: var(--accent)
+        }
+
+        /* Footer & utils */
+        footer {
+            padding: 20px 0 36px;
+            border-top: 1px solid rgba(0, 0, 0, .06);
+            margin-top: 24px;
+            color: var(--muted)
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .right {
+            margin-left: auto
+        }
+
+        .ghost {
+            background: transparent;
+            border: 1px dashed rgba(0, 0, 0, .2)
+        }
+
+        .login-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            display: none;
+            place-items: center
+        }
+
+        .login-card {
+            background: var(--card);
+            border: 1px solid rgba(0, 0, 0, .1);
+            border-radius: 16px;
+            padding: 18px;
+            width: min(420px, 92vw)
+        }
+
+        label {
+            font-size: .9rem;
+            color: var(--muted)
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, .12);
+            background: #fff;
+            color: #000
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container nav">
+            <a href="#top" class="brand" aria-label="LeafyGlow home">
+                <img src="logo.png" alt="LeafyGlow Logo" />
+                <span>LEAFYGLOW</span>
+            </a>
+            <nav class="navlinks">
+                <a href="#home">Home</a>
+                <a href="#model">Business Model</a>
+                <a href="#channels">Channels</a>
+                <a href="#revenue">Revenue</a>
+                <a href="#team">Team</a>
+                <a class="cart" href="#cart" aria-label="Shopping cart">
+                    Cart <span id="cartBadge" class="badge">0</span>
+                </a>
+                <a id="loginBtn" href="#login" class="btn">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO / OVERVIEW -->
+    <main id="home" class="hero container">
+        <p class="pill">Bangladesh • Herbal • Hair • Skin • Health</p>
+        <h1>Natural Hair, Skin & Health Solutions for Local Lifestyles</h1>
+        <p class="muted">We are a Bangladeshi herbal brand focused on safe, natural, and effective care. We blend
+            traditional herbal knowledge with modern formulations so people can trust what they use every day. Our
+            vision is to make herbal care part of everyday life in Bangladesh.</p>
+
+        <div class="kpis">
+            <div class="card">
+                <h3>Price Range (BD)</h3>
+                <div class="big">৳350–2,500</div>
+                <div class="muted">Typical retail</div>
+            </div>
+            <div class="card">
+                <h3>Year 1 Revenue Goal</h3>
+                <div class="big">৳6–40 Lakh</div>
+                <div class="muted">Target band</div>
+            </div>
+            <div class="card">
+                <h3>Year 2 Revenue Goal</h3>
+                <div class="big">৳80 Lakh–1 Cr</div>
+                <div class="muted">Growth plan</div>
+            </div>
+            <div class="card">
+                <h3>Influencer Boost</h3>
+                <div class="big">+40–60%</div>
+                <div class="muted">Monthly sales (expected)</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PRODUCTS with IMAGES -->
+    <section class="container">
+        <div class="section-title">
+            <h2>Featured Products</h2><span class="pill">Add to cart demo</span>
+        </div>
+        <div class="products">
+            <article class="product">
+                <img src="prod-herbal-hair-oil.png" alt="Herbal Hair Oil product" />
+                <div class="row"><strong>Herbal Hair Oil</strong><span class="right price">৳499</span></div>
+                <button class="btn" onclick="addToCart()">Add to cart</button>
+            </article>
+            <article class="product">
+                <img src="prod-herbal-face-cream.png" alt="Herbal Face Cream product" />
+                <div class="row"><strong>Herbal Face Cream</strong><span class="right price">৳690</span></div>
+                <button class="btn" onclick="addToCart()">Add to cart</button>
+            </article>
+            <article class="product">
+                <img src="prod-herbal-health-supplement.png" alt="Herbal Health Supplement product" />
+                <div class="row"><strong>Herbal Health Supplement</strong><span class="right price">৳1,250</span></div>
+                <button class="btn" onclick="addToCart()">Add to cart</button>
+            </article>
+        </div>
+    </section>
+
+    <!-- BUSINESS MODEL CANVAS -->
+    <section id="model" class="container">
+        <div class="section-title">
+            <h2>Business Model</h2><span class="pill">One‑page canvas</span>
+        </div>
+        <div class="bmc">
+            <div class="box">
+                <h4>Key Partners</h4>
+                <ul>
+                    <li>Local herb growers & extract suppliers</li>
+                    <li>Packaging vendors (glass/jar)</li>
+                    <li>E‑commerce & logistics partners</li>
+                    <li>Dermatology & R&D advisors</li>
+                </ul>
+            </div>
+            <div class="box">
+                <h4>Key Activities</h4>
+                <ul>
+                    <li>Formulation & quality assurance</li>
+                    <li>Branding & content/influencer marketing</li>
+                    <li>Fulfillment & customer support</li>
+                    <li>Retail onboarding</li>
+                </ul>
+            </div>
+            <div class="box">
+                <h4>Key Resources</h4>
+                <ul>
+                    <li>LeafyGlow brand & community trust</li>
+                    <li>In‑house formulas & SOPs</li>
+                    <li>Supplier network</li>
+                    <li>Digital assets (site, socials)</li>
+                </ul>
+            </div>
+            <div class="box">
+                <h4>Value Proposition</h4>
+                <ul>
+                    <li>Safe, natural, effective herbal care</li>
+                    <li>Bangladesh‑first formulations</li>
+                    <li>Transparent ingredients & guarantees</li>
+                </ul>
+            </div>
+            <div class="box">
+                <h4>Customer Segments</h4>
+                <ul>
+                    <li>18–40: hair fall & skin‑care seekers</li>
+                    <li>Eco‑conscious, cruelty‑free buyers</li>
+                    <li>Gift & wellness shoppers</li>
+                </ul>
+            </div>
+            <div class="box col-2">
+                <h4>Customer Relationships</h4>
+                <ul>
+                    <li>Social community & creator collabs</li>
+                    <li>Feedback loops, trials, reviews</li>
+                    <li>Guarantee & responsive support</li>
+                </ul>
+            </div>
+            <div class="box col-3">
+                <h4>Channels</h4>
+                <ul>
+                    <li>Online: website, Facebook, Instagram, marketplaces</li>
+                    <li>Offline: drugstores, cosmetics counters, superstores</li>
+                    <li>Influencer live‑commerce & pop‑ups</li>
+                </ul>
+            </div>
+            <div class="box col-2">
+                <h4>Cost Structure</h4>
+                <ul>
+                    <li>COGS: herbs, actives, packaging</li>
+                    <li>Marketing: ads, creators, sampling</li>
+                    <li>Ops: salaries, logistics, QA</li>
+                </ul>
+            </div>
+            <div class="box col-3">
+                <h4>Revenue Streams</h4>
+                <ul>
+                    <li>Direct‑to‑consumer (site & socials)</li>
+                    <li>Retail & wholesale margins</li>
+                    <li>Bundles, subscriptions, seasonal kits</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHANNELS -->
+    <section id="channels" class="container">
+        <div class="grid cols-2">
+            <div class="card">
+                <h3>Sales Channels</h3>
+                <ul>
+                    <li>Website & social DMs</li>
+                    <li>Marketplaces (local)</li>
+                    <li>Retail partners: drugstore, cosmetics, superstore</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Marketing Channels</h3>
+                <ul>
+                    <li>Influencer campaigns & live sessions</li>
+                    <li>UGC & reviews</li>
+                    <li>Sampling, fairs & pop‑ups</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVENUE & GOALS -->
+    <section id="revenue" class="container">
+        <div class="section-title">
+            <h2>BD Market — Revenue & Targets</h2><span class="pill">edit the text before printing</span>
+        </div>
+        <div class="grid cols-3">
+            <div class="card" contenteditable="true">
+                <h3>Price Range</h3>
+                <p class="muted">৳350–2,500</p>
+                <p>Core SKUs priced for mass‑premium shoppers.</p>
+            </div>
+            <div class="card" contenteditable="true">
+                <h3>Year 1 Goal</h3>
+                <p class="muted">৳6–40 lakh</p>
+                <p>Ramp via creator pushes and retail pilots.</p>
+            </div>
+            <div class="card" contenteditable="true">
+                <h3>Year 2 Goal</h3>
+                <p class="muted">৳80 lakh–1 crore</p>
+                <p>Scale with expanded retail + bundles/subscriptions.</p>
+            </div>
+            <div class="card" contenteditable="true">
+                <h3>Assumption</h3>
+                <p class="muted">Influencers: +40–60% monthly sales</p>
+                <p>Live‑commerce & short‑video content drive peaks.</p>
+            </div>
+            <div class="card" contenteditable="true">
+                <h3>Competition</h3>
+                <p>Local herbal brands, imported K‑beauty, ayurvedic players. We compete on trust, localization, and
+                    efficacy.</p>
+            </div>
+            <div class="card" contenteditable="true">
+                <h3>Exit Plan</h3>
+                <p>3–5 year horizon: strategic acquisition by regional wellness/beauty house or PE roll‑up once EBITDA
+                    margin stabilizes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team" class="container">
+        <div class="section-title">
+            <h2>Team</h2><span class="pill">science‑led</span>
+        </div>
+        <div class="grid cols-3">
+            <div class="card">
+                <h3>Chief Cosmetic Chemist</h3>
+                <p class="muted">15+ yrs formulation & safety; leads R&D.</p>
+            </div>
+            <div class="card">
+                <h3>Dermatology Advisor</h3>
+                <p class="muted">Skin health expertise; guides sensitive‑skin testing.</p>
+            </div>
+            <div class="card">
+                <h3>QA Manager</h3>
+                <p class="muted">Ensures every batch meets standards.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="row">
+            <button class="btn ghost" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            <a class="btn right" href="#top">Back to top ↑</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container row">
+            <div>© <span id="year"></span> LeafyGlow • All rights reserved</div>
+            <div class="right">Website demo for PowerPoint submission</div>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-card">
+            <div class="row">
+                <h3 style="margin:0">Login</h3><button class="btn right" onclick="toggleLogin(false)">✕</button>
+            </div>
+            <p class="muted" style="margin-top:6px">Demo login (no backend required).</p>
+            <label>Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+            <div style="height:10px"></div>
+            <label>Password</label>
+            <input id="pwd" type="password" placeholder="••••••••" />
+            <div style="height:14px"></div>
+            <button class="btn" onclick="demoLogin()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        const badge = document.getElementById('cartBadge');
+        const loginBtn = document.getElementById('loginBtn');
+        const modal = document.getElementById('loginModal');
+        const year = document.getElementById('year');
+        year.textContent = new Date().getFullYear();
+
+        function addToCart() {
+            const n = Number(badge.textContent) + 1; badge.textContent = String(n);
+        }
+        function toggleLogin(show = true) { modal.style.display = show ? 'grid' : 'none'; }
+        loginBtn.addEventListener('click', e => { e.preventDefault(); toggleLogin(true); });
+        function demoLogin() {
+            const email = document.getElementById('email').value.trim();
+            const pwd = document.getElementById('pwd').value.trim();
+            if (!email || !pwd) { alert('Please enter email & password'); return; }
+            toggleLogin(false);
+            alert('Logged in (demo) as ' + email);
+        }
+    </script>
+</body>
+
+</html>
